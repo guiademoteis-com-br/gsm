@@ -9,7 +9,7 @@ window.Gsm = async function Gsm({ El = '', Id = null, Cache = 60, Tick = null, S
     const Carregando = ref(true);
 
     const dados = await buscarDadosCache(Id, Cache);
-    const motel = await store(dados);
+    const motel = store(dados);
 
     createApp({
         setup() {

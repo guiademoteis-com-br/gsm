@@ -1,6 +1,6 @@
 import { FormatarPreco, FormatarLista } from '../utils/utils.js';
 
-export async function store(dados) {
+export function store(dados) {
     const idSuiteAtual = +new URLSearchParams(location.search).get('id');
 
     const { Motel } = dados;
