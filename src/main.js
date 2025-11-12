@@ -14,6 +14,7 @@ window.Gsm = async function Gsm({ El = '', Id = null, Cache = 60, Tick = null, S
     createApp({
         setup() {
             const Gm = ref(motel);
+            console.log(Gm.value);
 
             onMounted(() => {
                 Utils.CarregarScript(Script);
