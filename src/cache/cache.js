@@ -1,7 +1,14 @@
 import { buscarDados } from '../api/api.js';
 
 export async function buscarDadosCache(id, minutos = 60) {
+    const urlTemNoCache = window.location.search.includes('nocache');
     const chave = `GsmCache:IdMotel=${id}-${navigator.userAgent}`;
+
+    if (urlTemNoCache) {
+        console.log(`🚫 NOCACHE ATIVADO → ignorando cache para ${id}`);
+        const dados = await buscarDados(id);
+        return dados;
+    }
 
     const cacheBruto = localStorage.getItem(chave);
 

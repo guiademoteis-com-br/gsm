@@ -1,37 +1,40 @@
-import { ref as d, createApp as C, onMounted as h, nextTick as y } from "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js";
-async function v(o) {
-  const t = await fetch(`https://guiasites.guiademoteis.com.br/v1/guiasites/moteis/${o}/json`);
-  if (!t.ok) throw new Error(`Erro: ${t.message}`);
-  return t.json();
+import { ref as m, createApp as h, onMounted as A, nextTick as w } from "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js";
+async function f(o) {
+  const e = await fetch(`https://guiasites.guiademoteis.com.br/v1/guiasites/moteis/${o}/json`);
+  if (!e.ok) throw new Error(`Erro: ${e.message}`);
+  return e.json();
 }
-async function A(o, t = 60) {
-  const n = `GsmCache:IdMotel=${o}-${navigator.userAgent}`, a = localStorage.getItem(n);
-  if (a) {
-    const { expiracao: c, valor: l } = JSON.parse(a);
+async function y(o, e = 60) {
+  const r = window.location.search.includes("nocache"), n = `GsmCache:IdMotel=${o}-${navigator.userAgent}`;
+  if (r)
+    return console.log(`🚫 NOCACHE ATIVADO → ignorando cache para ${o}`), await f(o);
+  const t = localStorage.getItem(n);
+  if (t) {
+    const { expiracao: c, valor: u } = JSON.parse(t);
     if (Date.now() < c)
-      return console.log(`✅ CACHE UTILIZADO → ${n}`), l;
+      return console.log(`✅ CACHE UTILIZADO → ${n}`), u;
     console.log("⏳ CACHE EXPIRADO → buscando novamente"), localStorage.removeItem(n);
   }
   console.log(`🌐 REQUISIÇÃO REAL PARA O MOTEL DE ID → ${o}`);
-  const e = await v(o);
+  const s = await f(o);
   return localStorage.setItem(
     n,
     JSON.stringify({
-      expiracao: Date.now() + t * 6e4,
-      valor: e
+      expiracao: Date.now() + e * 6e4,
+      valor: s
     })
-  ), e;
+  ), s;
 }
-function f(o = [], t = "body") {
-  o.forEach((n) => {
-    const a = document.createElement("script");
-    a.src = n, document.querySelector(t).appendChild(a);
+function g(o = [], e = "body") {
+  o.forEach((r) => {
+    const n = document.createElement("script");
+    n.src = r, document.querySelector(e).appendChild(n);
   });
 }
-function E(o = "", t = "", n = null) {
-  return `${o}?${t}&id=${n}`;
+function v(o = "", e = "", r = null) {
+  return `${o}?${e}&id=${r}`;
 }
-function u(o = null) {
+function i(o = null) {
   return o.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL"
@@ -41,56 +44,56 @@ function p(o = []) {
   return new Intl.ListFormat("pt-BR", {
     style: "long",
     type: "conjunction"
-  }).format(o.map((t) => t.Nome));
+  }).format(o.map((e) => e.Nome));
 }
-const L = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const E = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  CarregarScript: f,
+  CarregarScript: g,
   FormatarLista: p,
-  FormatarPreco: u,
-  Linkar: E
+  FormatarPreco: i,
+  Linkar: v
 }, Symbol.toStringTag, { value: "Module" }));
-function w(o) {
-  const t = +new URLSearchParams(location.search).get("id"), { Motel: n } = o, { Suites: a, ...e } = n, c = a.map((r) => {
-    const { Menor: s, Padrao: m, Maior: g } = r.Precos, { Itens: S } = r, I = `suite.php?${r.Slug.Base}&id=${r.Id}`;
+function L(o) {
+  const e = +new URLSearchParams(location.search).get("id"), { Motel: r } = o, { Suites: n, ...t } = r, s = n.map((a) => {
+    const { Menor: l, Padrao: d, Maior: C } = a.Precos, { Itens: I } = a, S = `suite.php?${a.Slug.Base}&id=${a.Id}`;
     return {
-      ...r,
-      Link: I,
+      ...a,
+      Link: S,
       Precos: {
-        Menor: u(s),
-        Padrao: u(m),
-        Maior: u(g)
+        Menor: i(l),
+        Padrao: i(d),
+        Maior: i(C)
       },
-      ItensFormatados: p(S)
+      ItensFormatados: p(I)
     };
-  }), l = (r = !0, s = []) => c.filter((m) => ![!r && t, ...s].includes(m.Id)), i = (r = null) => c.find((s) => s.Id === (r ?? t));
+  }), c = (a = !0, l = []) => s.filter((d) => ![!a && e, ...l].includes(d.Id)), u = (a = null) => s.find((l) => l.Id === (a ?? e));
   return {
-    IdMotel: e.Id,
-    NomeMotel: e.Nome,
-    Telefones: e.Contato.Telefones,
-    Celulares: e.Contato.Celulares,
-    Whatsapps: e.Contato.Whatsapps,
-    Alzira: e.Contato.Alzira,
-    Emails: e.Contato.Emails,
-    Logavel: e.Logavel,
-    Reservas: e.Reservas,
-    Suites: l,
-    Suite: i
+    IdMotel: t.Id,
+    NomeMotel: t.Nome,
+    Telefones: t.Contato.Telefones,
+    Celulares: t.Contato.Celulares,
+    Whatsapps: t.Contato.Whatsapps,
+    Alzira: t.Contato.Alzira,
+    Emails: t.Contato.Emails,
+    Logavel: t.Logavel,
+    Reservas: t.Reservas,
+    Suites: c,
+    Suite: u
   };
 }
-window.Gsm = async function({ El: t = "", Id: n = null, Cache: a = 60, Tick: e = null, Script: c = [] } = {}) {
-  if (!document.querySelector(t)) return;
-  const l = d(!0), i = await A(n, a), r = w(i);
-  C({
+window.Gsm = async function({ El: e = "", Id: r = null, Cache: n = 60, Tick: t = null, Script: s = [] } = {}) {
+  if (!document.querySelector(e)) return;
+  const c = m(!0), u = await y(r, n), a = L(u);
+  h({
     setup() {
-      const s = d(r);
-      return h(() => {
-        f(c), e && y(e), l.value = !1;
+      const l = m(a);
+      return A(() => {
+        g(s), t && w(t), c.value = !1;
       }), {
-        Carregando: l,
-        Gm: s,
-        Utils: L
+        Carregando: c,
+        Gm: l,
+        Utils: E
       };
     }
-  }).mount(t);
+  }).mount(e);
 };
