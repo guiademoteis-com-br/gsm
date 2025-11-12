@@ -10,14 +10,14 @@ export function Linkar(arquivo = '', slug = '', id = null) {
     return `${arquivo}?${slug}&id=${id}`;
 }
 
-export function Precificar(preco = null) {
+export function FormatarPreco(preco = null) {
     return preco.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL',
     });
 }
 
-export function Listar(itens = []) {
+export function FormatarLista(itens = []) {
     return new Intl.ListFormat('pt-BR', {
         style: 'long',
         type: 'conjunction',

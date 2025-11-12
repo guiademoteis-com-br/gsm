@@ -1,4 +1,4 @@
-import { Precificar, Listar } from '../utils/utils.js';
+import { FormatarPreco, FormatarLista } from '../utils/utils.js';
 
 export async function store(dados) {
     const idSuiteAtual = +new URLSearchParams(location.search).get('id');
@@ -9,14 +9,17 @@ export async function store(dados) {
     const suitesFormatadas = SuitesBrutas.map(suite => {
         const { Menor, Padrao, Maior } = suite.Precos;
         const { Itens } = suite;
+        const Link = `suite.php?${suite.Slug.Base}&id=${suite.Id}`;
+
         return {
             ...suite,
+            Link,
             Precos: {
-                Menor: Precificar(Menor),
-                Padrao: Precificar(Padrao),
-                Maior: Precificar(Maior),
+                Menor: FormatarPreco(Menor),
+                Padrao: FormatarPreco(Padrao),
+                Maior: FormatarPreco(Maior),
             },
-            ItensFormatados: Listar(Itens),
+            ItensFormatados: FormatarLista(Itens),
         };
     });
 
