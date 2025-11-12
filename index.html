@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>v2</title>
+        <style>
+          [v-cloak] {
+            display: none;
+          }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <pre v-if="Carregando">
+                Carregando...
+            </pre>
+            <ul v-cloak>
+                <li>{{Gm}}</li>
+            </ul>
+        </div>
+        <script type="module" src="/src/main.js"></script>
+        <script type="module">
+            Gsm({
+                El: '#app',
+                Id: 14,
+                // Cache: null,
+                // Tick: () => {},
+                // Script: ['https://go.guiademoteis.com.br/go-sites/go.min.js'],
+            });
+        </script>
+    </body>
+</html>
