@@ -1,15 +1,31 @@
+import { Precificar, Listar } from '../utils/utils.js';
+
 export async function store(dados) {
     const idSuiteAtual = +new URLSearchParams(location.search).get('id');
 
     const { Motel } = dados;
-    const { Suites: suites, ...resto } = Motel;
+    const { Suites: SuitesBrutas, ...resto } = Motel;
+
+    const suitesFormatadas = SuitesBrutas.map(suite => {
+        const { Menor, Padrao, Maior } = suite.Precos;
+        const { Itens } = suite;
+        return {
+            ...suite,
+            Precos: {
+                Menor: Precificar(Menor),
+                Padrao: Precificar(Padrao),
+                Maior: Precificar(Maior),
+            },
+            ItensFormatados: Listar(Itens),
+        };
+    });
 
     const Suites = (exibirSuiteAtual = true, noIds = []) => {
-        return suites.filter(suite => ![!exibirSuiteAtual && idSuiteAtual, ...noIds].includes(suite.Id));
+        return suitesFormatadas.filter(suite => ![!exibirSuiteAtual && idSuiteAtual, ...noIds].includes(suite.Id));
     };
 
     const Suite = (id = null) => {
-        return suites.find(suite => suite.Id === (id ?? idSuiteAtual));
+        return suitesFormatadas.find(suite => suite.Id === (id ?? idSuiteAtual));
     };
 
     return {
