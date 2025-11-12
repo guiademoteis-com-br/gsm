@@ -1,10 +1,10 @@
-import { ref as d, createApp as C, onMounted as y, nextTick as h } from "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js";
+import { ref as d, createApp as C, onMounted as h, nextTick as y } from "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js";
 async function v(o) {
   const t = await fetch(`https://guiasites.guiademoteis.com.br/v1/guiasites/moteis/${o}/json`);
   if (!t.ok) throw new Error(`Erro: ${t.message}`);
   return t.json();
 }
-async function w(o, t = 60) {
+async function A(o, t = 60) {
   const n = `GsmCache:IdMotel=${o}-${navigator.userAgent}`, a = localStorage.getItem(n);
   if (a) {
     const { expiracao: c, valor: l } = JSON.parse(a);
@@ -28,7 +28,7 @@ function f(o = [], t = "body") {
     a.src = n, document.querySelector(t).appendChild(a);
   });
 }
-function A(o = "", t = "", n = null) {
+function E(o = "", t = "", n = null) {
   return `${o}?${t}&id=${n}`;
 }
 function u(o = null) {
@@ -43,14 +43,14 @@ function p(o = []) {
     type: "conjunction"
   }).format(o.map((t) => t.Nome));
 }
-const E = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const L = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   CarregarScript: f,
   FormatarLista: p,
   FormatarPreco: u,
-  Linkar: A
+  Linkar: E
 }, Symbol.toStringTag, { value: "Module" }));
-async function L(o) {
+function w(o) {
   const t = +new URLSearchParams(location.search).get("id"), { Motel: n } = o, { Suites: a, ...e } = n, c = a.map((r) => {
     const { Menor: s, Padrao: m, Maior: g } = r.Precos, { Itens: S } = r, I = `suite.php?${r.Slug.Base}&id=${r.Id}`;
     return {
@@ -80,16 +80,16 @@ async function L(o) {
 }
 window.Gsm = async function({ El: t = "", Id: n = null, Cache: a = 60, Tick: e = null, Script: c = [] } = {}) {
   if (!document.querySelector(t)) return;
-  const l = d(!0), i = await w(n, a), r = await L(i);
+  const l = d(!0), i = await A(n, a), r = w(i);
   C({
     setup() {
       const s = d(r);
-      return y(() => {
-        f(c), e && h(e), l.value = !1;
+      return h(() => {
+        f(c), e && y(e), l.value = !1;
       }), {
         Carregando: l,
         Gm: s,
-        Utils: E
+        Utils: L
       };
     }
   }).mount(t);
