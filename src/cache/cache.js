@@ -5,7 +5,7 @@ export async function buscarDadosCache(id, minutos = 60) {
     const chave = `GsmCache:IdMotel=${id}-${navigator.userAgent}`;
 
     if (urlTemNoCache) {
-        console.log(`🚫 NOCACHE ATIVADO → ignorando cache para ${id}`);
+        console.log(`🚫 NOCACHE ATIVADO → ignorando cache para o motel de ID ${id}`);
         const dados = await buscarDados(id);
         return dados;
     }

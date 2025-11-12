@@ -7,7 +7,7 @@ async function f(o) {
 async function y(o, e = 60) {
   const r = window.location.search.includes("nocache"), n = `GsmCache:IdMotel=${o}-${navigator.userAgent}`;
   if (r)
-    return console.log(`🚫 NOCACHE ATIVADO → ignorando cache para ${o}`), await f(o);
+    return console.log(`🚫 NOCACHE ATIVADO → ignorando cache para o motel de ID ${o}`), await f(o);
   const t = localStorage.getItem(n);
   if (t) {
     const { expiracao: c, valor: u } = JSON.parse(t);
@@ -55,16 +55,16 @@ const E = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
 }, Symbol.toStringTag, { value: "Module" }));
 function L(o) {
   const e = +new URLSearchParams(location.search).get("id"), { Motel: r } = o, { Suites: n, ...t } = r, s = n.map((a) => {
-    const { Menor: l, Padrao: d, Maior: C } = a.Precos, { Itens: I } = a, S = `suite.php?${a.Slug.Base}&id=${a.Id}`;
+    const { Menor: l, Padrao: d, Maior: I } = a.Precos, { Itens: C } = a, S = `suite.php?${a.Slug.Base}&id=${a.Id}`;
     return {
       ...a,
       Link: S,
       Precos: {
         Menor: i(l),
         Padrao: i(d),
-        Maior: i(C)
+        Maior: i(I)
       },
-      ItensFormatados: p(I)
+      ItensFormatados: p(C)
     };
   }), c = (a = !0, l = []) => s.filter((d) => ![!a && e, ...l].includes(d.Id)), u = (a = null) => s.find((l) => l.Id === (a ?? e));
   return {
