@@ -7,7 +7,7 @@ export function CarregarScript(script = [], el = 'body') {
     script.forEach(link => {
         const s = document.createElement('script');
         s.src = link;
-        s.async = true;
+        s.defer = true;
         document.querySelector(el)?.appendChild(s);
     });
 }
