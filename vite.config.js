@@ -4,13 +4,16 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     plugins: [vue()],
+    define: {
+        'process.env.NODE_ENV': JSON.stringify('production'),
+    },
     base: './',
     build: {
         lib: {
             entry: 'src/main.js',
             name: 'GSM',
-            fileName: 'gsm',
-            formats: ['es'],
+            fileName: format => 'gsm.js',
+            formats: ['iife'],
         },
     },
     resolve: {
