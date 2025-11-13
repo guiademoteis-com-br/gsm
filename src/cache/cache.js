@@ -1,13 +1,21 @@
-import { buscarDados } from '../api/api.js';
+import { buscarDados } from '@/api/api.js';
 
-export async function buscarDadosCache(id, minutos = 60) {
+const MS_POR_MINUTO = 60000;
+const CHAVE_BASE = 'GSMCache:IdMotel=';
+
+/**
+ * Busca dados do motel, priorizando o cache local.
+ * @param {number} id - O ID do motel.
+ * @param {number} minutos - Duração do cache em minutos.
+ * @returns {Promise<Object>} Os dados do motel.
+ */
+export async function buscarDadosCache(id, minutos = 2880) {
     const urlTemNoCache = window.location.search.includes('nocache');
-    const chave = `GsmCache:IdMotel=${id}-${navigator.userAgent}`;
+    const chave = `${CHAVE_BASE}${id}`;
 
     if (urlTemNoCache) {
         console.log(`🚫 NOCACHE ATIVADO → ignorando cache para o motel de ID ${id}`);
-        const dados = await buscarDados(id);
-        return dados;
+        return buscarDados(id);
     }
 
     const cacheBruto = localStorage.getItem(chave);
@@ -20,7 +28,7 @@ export async function buscarDadosCache(id, minutos = 60) {
             return valor;
         }
 
-        console.log(`⏳ CACHE EXPIRADO → buscando novamente`);
+        console.log(`⏳ CACHE EXPIRADO → removendo e buscando novamente`);
         localStorage.removeItem(chave);
     }
 
@@ -30,7 +38,7 @@ export async function buscarDadosCache(id, minutos = 60) {
     localStorage.setItem(
         chave,
         JSON.stringify({
-            expiracao: Date.now() + minutos * 60000,
+            expiracao: Date.now() + minutos * MS_POR_MINUTO,
             valor: dados,
         })
     );

@@ -1,34 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>v2</title>
-        <style>
-          [v-cloak] {
-            display: none;
-          }
-        </style>
+        <title>GSM</title>
     </head>
     <body>
-        <div id="app">
-            <pre v-if="Carregando">
-                Carregando...
-            </pre>
-            <ul v-cloak>
-                <li v-for="s in Gm.Suites()">
-                    {{s.Link}}
-                </li>
+        <main id="app">
+            <ul v-for="s in [Gm.Suite(42)]">
+              <li>{{s.Id}}</li>
+              <li>{{s.Nome.Base}}</li>
             </ul>
-        </div>
+        </main>
         <script type="module" src="/src/main.js"></script>
         <script type="module">
-            Gsm({
+            GSM({
                 El: '#app',
                 Id: 14,
-                // Cache: null,
-                // Tick: () => {},
-                // Script: ['https://go.guiademoteis.com.br/go-sites/go.min.js'],
             });
         </script>
     </body>

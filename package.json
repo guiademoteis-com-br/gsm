@@ -1,5 +1,5 @@
 {
-  "name": "v2",
+  "name": "gsm",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,7 +8,11 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "vue": "^3.5.24"
+  },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.1",
     "vite": "^7.2.2"
   }
 }
